@@ -5,7 +5,7 @@
 
 using namespace std;
 #define MAX 31
-
+string str;
 bool isPalindrome(string str){
     int len=str.size();
     for(int i=0; i<str.size()/2; i++){
@@ -13,18 +13,13 @@ bool isPalindrome(string str){
     }
     return true;
 }
-bool isPseudo(string str){
-    for(int i=1; i<str.size(); i++){
-        string temp=str.substr(0,i);
-        if(i<str.size()-1){
-             temp+=str.substr(i+1);
-        }
-        if(isPalindrome(temp)){
-            return true;
-        }
-       
-    }
-    return false;
+bool isPseudo(int start, int end, bool check){
+    
+    if(start>end) return true;
+    if(str[start]==str[end]) return isPseudo(start+1,end-1,check);
+    else if(check) return isPseudo(start+1,end,false)|isPseudo(start,end-1,false);
+    else return false;
+
 }
 int main(void){
     
@@ -33,19 +28,19 @@ int main(void){
 
     int T;
     cin>>T;
-    string str;
+    string in;
     while(T--){
-        cin>>str;
+        cin>>in;
+        str=in;
         if(isPalindrome(str)){
             cout<<0<<"\n";
         }
-        else if(isPseudo(str)){
+        else if(isPseudo(0,str.size()-1,1)){
             cout<<1<<"\n";
         }
         else{
             cout<<2<<"\n";
         }
-
     }
     
     return 0;

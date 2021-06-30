@@ -4,17 +4,9 @@
 #include <cstring>
 using namespace std;
 #define MAX 26
-int arr[MAX];
-bool check(string str,int K){
-    memset(arr,0,sizeof(arr));
-    for(int i=0; i<str.size(); i++){
-        arr[str[i]-'a']+=1;
-        if(arr[str[i]-'a']==K){
-            return true;
-        }
-    }
-    return false;
-}
+vector<int> arr[MAX];
+
+
 int main(void){
     
     ios::sync_with_stdio(false);
@@ -27,26 +19,32 @@ int main(void){
     
     while(T--){
         cin>>w>>k;
-        int start=0;
-        int end=0;
-        string temp1=""+w[0];
-        string temp2="";
-        int answer1=10001;
-        int answer2=0;
-
-        while(start<=end&&end<w.size()){
-            // temp1이 조건3 만족하는 문자열이라면
-            if(check(temp1,k)){
-                cout<<temp1<<" ";
-                answer1=min(answer1,(int) temp1.size());
-                temp1=temp1.substr(1);
-                start+=1;
-            }
-            else{
-                temp1+=w[++end];    
+        int min_len=987654321;
+        int max_len=0;
+        bool flag=false;
+        for(int i=0; i<MAX; i++){
+            arr[i].clear();
+        }
+        for(int i=0; i<w.size(); i++){
+            arr[w[i]-'a'].push_back(i);
+        }
+        for(int i=0; i<MAX; i++){
+            if(arr[i].size()>=k){
+                for(int j=0; j+k-1<arr[i].size(); j++){
+                    flag=true;
+                    int len=arr[i][j+k-1]-arr[i][j]+1;
+                    max_len=max(max_len,len);
+                    min_len=min(min_len,len);
+                }
             }
         }
-
+        if(flag){
+             cout<<min_len<<" "<<max_len<<"\n";
+        }
+        else{
+            cout<<-1<<"\n";
+        }
+       
         
     }
 
